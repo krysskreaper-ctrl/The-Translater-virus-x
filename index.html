@@ -1,451 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Speech Translator</title>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{
-            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-            background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-            min-height:100vh;
-            display:flex;
-            flex-direction:column;
-            padding:20px;
-            color:#333
-        }
-        .container{max-width:600px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:20px;flex:1}
-        header{text-align:center;color:#fff;padding:20px 0}
-        h1{font-size:2rem;font-weight:700;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,.2)}
-        .subtitle{font-size:.9rem;opacity:.9}
-        .language-selector{
-            background:#fff;
-            border-radius:20px;
-            padding:20px;
-            box-shadow:0 10px 30px rgba(0,0,0,.2)
-        }
-        .language-row{display:flex;align-items:center;gap:15px;margin-bottom:15px}
-        .language-row:last-child{margin-bottom:0}
-        label{font-weight:600;min-width:60px;font-size:.95rem}
-        select{
-            flex:1;padding:12px 15px;
-            border:2px solid #e0e0e0;border-radius:12px;
-            font-size:1rem;background:#fff;cursor:pointer;
-            transition:.3s
-        }
-        select:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,.1)}
-        .swap-btn{
-            background:#667eea;color:#fff;border:none;
-            width:45px;height:45px;border-radius:50%;
-            font-size:1.3rem;cursor:pointer;
-            display:flex;align-items:center;justify-content:center;
-            margin:10px auto;transition:.3s;
-            box-shadow:0 4px 12px rgba(102,126,234,.3)
-        }
-        .swap-btn:hover{transform:rotate(180deg);background:#764ba2}
-        .swap-btn:active{transform:rotate(180deg) scale(.95)}
-        .translation-area{
-            background:#fff;border-radius:20px;padding:25px;
-            box-shadow:0 10px 30px rgba(0,0,0,.2);
-            flex:1;display:flex;flex-direction:column;gap:20px;
-            max-height:500px
-        }
-        .text-box{position:relative;flex:1}
-        .text-label{
-            font-weight:600;margin-bottom:10px;
-            display:block;color:#667eea;font-size:.9rem;
-            text-transform:uppercase;letter-spacing:.5px
-        }
-        textarea{
-            width:100%;min-height:120px;padding:15px;
-            border:2px solid #e0e0e0;border-radius:12px;
-            font-size:1rem;font-family:inherit;
-            resize:vertical;transition:.3s
-        }
-        textarea:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,.1)}
-        .controls{display:flex;gap:10px;margin-top:10px}
-        .btn{
-            flex:1;padding:15px 25px;border:none;
-            border-radius:12px;font-size:1rem;font-weight:600;
-            cursor:pointer;transition:.3s;
-            display:flex;align-items:center;justify-content:center;
-            gap:8px;box-shadow:0 4px 12px rgba(0,0,0,.15)
-        }
-        .btn-primary{
-            background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-            color:#fff
-        }
-        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(102,126,234,.4)}
-        .btn-primary:active{transform:translateY(0)}
-        .btn-secondary{
-            background:#f5f5f5;color:#333
-        }
-        .btn-secondary:hover{background:#e0e0e0}
-        .btn:disabled{
-            opacity:.5;cursor:not-allowed;transform:none!important
-        }
-        .btn.recording{
-            background:#ef4444;animation:pulse 1.5s infinite
-        }
-        @keyframes pulse{
-            0%,100%{opacity:1}
-            50%{opacity:.7}
-        }
-        .status{
-            text-align:center;padding:12px;border-radius:12px;
-            font-size:.9rem;font-weight:500;margin-top:10px;
-            opacity:0;transition:opacity .3s
-        }
-        .status.show{opacity:1}
-        .status.info{background:#e3f2fd;color:#1976d2}
-        .status.success{background:#e8f5e9;color:#388e3c}
-        .status.error{background:#ffebee;color:#d32f2f}
-        .icon{font-size:1.2rem}
-        .divider{
-            height:2px;background:linear-gradient(90deg,transparent,#667eea,transparent);
-            margin:10px 0
-        }
-        @media(max-width:480px){
-            body{padding:15px}
-            h1{font-size:1.5rem}
-            .language-selector,.translation-area{padding:15px}
-            .btn{padding:12px 20px;font-size:.9rem}
-        }
-    </style>
-    <!-- Optional: make the page installable as a PWA -->
-    <link rel="manifest" href="manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
+<meta charset="UTF-8" />
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>The Mutilator X</title>
+
+<style>
+/* ===== GLOBAL NEON GREEN CRT VIBE ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  background: #000;
+  color: #a0ffb0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+/* scanline overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    rgba(0,255,120,0.08) 0px,
+    rgba(0,255,120,0.02) 2px,
+    transparent 4px
+  );
+  mix-blend-mode: screen;
+  opacity: 0.7;
+  z-index: 999;
+}
+
+/* green glow */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top, rgba(0,255,120,0.16), transparent 55%),
+    radial-gradient(circle at bottom, rgba(0,255,120,0.2), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  z-index: 998;
+}
+
+.app {
+  position: relative;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 1;
+}
+
+/* ===== BOOT TEXT ========================================================= */
+.boot {
+  font-family: monospace;
+  font-size: 11px;
+  color: #7fff7f;
+  line-height: 1.4;
+}
+
+/* ===== HEADER BAR (Google-ish) ========================================== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 2px 4px;
+}
+
+.header-title {
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #9effa8;
+}
+
+.header-pill {
+  border-radius: 999px;
+  border: 1px solid rgba(0,255,120,0.5);
+  padding: 4px 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #67ff8a;
+}
+
+/* ===== MAIN CARD ========================================================= */
+.card {
+  background: radial-gradient(circle at top, rgba(0,255,120,0.18), #020402 60%);
+  border-radius: 16px;
+  border: 1px solid rgba(0,255,120,0.4);
+  box-shadow: 0 0 18px rgba(0,255,120,0.18);
+  padding: 16px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* language row */
+.lang-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.lang-select {
+  flex: 1;
+  position: relative;
+}
+
+.lang-select select {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(0,255,120,0.5);
+  background: rgba(0,0,0,0.9);
+  color: #caffd5;
+  padding: 6px 12px;
+  font-size: 13px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.lang-select::after {
+  content: "▾";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  color: #8dffae;
+}
+
+.swap-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,255,120,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9effa8;
+  background: rgba(0,0,0,0.9);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* labels + textareas */
+.label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #65ff88;
+  margin-bottom: 4px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 110px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,255,120,0.4);
+  background: rgba(0,0,0,0.9);
+  color: #caffd5;
+  padding: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  box-shadow: inset 0 0 12px rgba(0,255,120,0.12);
+}
+
+textarea:focus {
+  border-color: #00ff75;
+  box-shadow: 0 0 10px rgba(0,255,120,0.6);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(0,255,120,0.7),
+    transparent);
+  margin: 4px 0;
+}
+
+/* buttons */
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+button {
+  border: none;
+}
+
+.btn {
+  flex: 1;
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,255,120,0.6);
+  background: rgba(0,0,0,0.9);
+  color: #b0ffc6;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.05s;
+}
+
+.btn-primary {
+  background: rgba(0,255,120,0.18);
+}
+
+.btn:hover {
+  background: rgba(0,255,120,0.22);
+  box-shadow: 0 0 10px rgba(0,255,120,0.7);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* status */
+.status {
+  margin-top: 4px;
+  padding: 8px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.status.show { opacity: 1; }
+
+.status.info {
+  border: 1px solid rgba(0,255,120,0.4);
+  background: rgba(0,255,120,0.06);
+  color: #98ffb2;
+}
+
+.status.success {
+  border: 1px solid rgba(0,255,120,0.7);
+  background: rgba(0,255,120,0.14);
+  color: #e3ffe9;
+}
+
+.status.error {
+  border: 1px solid #ff4d4d;
+  background: rgba(120,0,0,0.6);
+  color: #ffe3e3;
+}
+
+@media (max-width: 480px) {
+  body { padding: 10px; }
+  .card { padding: 14px 10px; }
+  textarea { min-height: 100px; }
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🌍 Speech Translator</h1>
-            <div class="subtitle">Speak naturally, translate instantly</div>
-        </header>
 
-        <div class="language-selector">
-            <div class="language-row">
-                <label for="fromLang">From:</label>
-                <select id="fromLang">
-                    <option value="en-US">English (US)</option>
-                    <option value="en-GB">English (UK)</option>
-                    <option value="es-ES">Spanish (Spain)</option>
-                    <option value="es-MX">Spanish (Mexico)</option>
-                    <option value="fr-FR">French</option>
-                    <option value="de-DE">German</option>
-                    <option value="it-IT">Italian</option>
-                    <option value="pt-BR">Portuguese (Brazil)</option>
-                    <option value="pt-PT">Portuguese (Portugal)</option>
-                    <option value="ru-RU">Russian</option>
-                    <option value="ja-JP">Japanese</option>
-                    <option value="ko-KR">Korean</option>
-                    <option value="zh-CN">Chinese (Simplified)</option>
-                    <option value="zh-TW">Chinese (Traditional)</option>
-                    <option value="ar-SA">Arabic</option>
-                    <option value="hi-IN">Hindi</option>
-                    <option value="nl-NL">Dutch</option>
-                    <option value="pl-PL">Polish</option>
-                    <option value="tr-TR">Turkish</option>
-                    <option value="sv-SE">Swedish</option>
-                </select>
-            </div>
+<div class="app">
+  <div class="boot">
+    BOOTING THE MUTILATOR X CORE...<br>
+    INITIALIZING LINGUISTIC CIRCUITS...<br>
+    SYSTEM ONLINE.<br>
+  </div>
 
-            <button class="swap-btn" id="swapBtn" title="Swap languages">⇅</button>
+  <header class="header">
+    <div class="header-title">THE MUTILATOR X</div>
+    <div class="header-pill">NEON TRANSLATOR</div>
+  </header>
 
-            <div class="language-row">
-                <label for="toLang">To:</label>
-                <select id="toLang">
-                    <option value="es">Spanish</option>
-                    <option value="en">English</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="it">Italian</option>
-                    <option value="pt">Portuguese</option>
-                    <option value="ru">Russian</option>
-                    <option value="ja">Japanese</option>
-                    <option value="ko">Korean</option>
-                    <option value="zh-CN">Chinese (Simplified)</option>
-                    <option value="zh-TW">Chinese (Traditional)</option>
-                    <option value="ar">Arabic</option>
-                    <option value="hi">Hindi</option>
-                    <option value="nl">Dutch</option>
-                    <option value="pl">Polish</option>
-                    <option value="tr">Turkish</option>
-                    <option value="sv">Swedish</option>
-                    <option value="th">Thai</option>
-                    <option value="vi">Vietnamese</option>
-                    <option value="id">Indonesian</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="translation-area">
-            <div class="text-box">
-                <label class="text-label">Original Text</label>
-                <textarea id="inputText" placeholder="Tap the microphone to speak or type here..."></textarea>
-                <div class="controls">
-                    <button class="btn btn-primary" id="micBtn">
-                        <span class="icon">🎤</span>
-                        <span id="micBtnText">Speak</span>
-                    </button>
-                    <button class="btn btn-secondary" id="clearBtn">
-                        <span class="icon">🗑️</span>
-                        Clear
-                    </button>
-                </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="text-box">
-                <label class="text-label">Translation</label>
-                <textarea id="outputText" placeholder="Translation will appear here..." readonly></textarea>
-                <div class="controls">
-                    <button class="btn btn-primary" id="speakBtn" disabled>
-                        <span class="icon">🔊</span>
-                        Speak Translation
-                    </button>
-                    <button class="btn btn-secondary" id="copyBtn" disabled>
-                        <span class="icon">📋</span>
-                        Copy
-                    </button>
-                </div>
-            </div>
-
-            <div class="status" id="status"></div>
-        </div>
+  <main class="card">
+    <!-- language selectors -->
+    <div class="lang-row">
+      <div class="lang-select">
+        <select id="fromLang">
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="it">Italian</option>
+          <option value="pt">Portuguese</option>
+          <option value="ru">Russian</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="zh-CN">Chinese (Simplified)</option>
+          <option value="zh-TW">Chinese (Traditional)</option>
+          <option value="ar">Arabic</option>
+          <option value="hi">Hindi</option>
+        </select>
+      </div>
+      <button class="swap-btn" id="swapBtn" title="Swap languages">⇄</button>
+      <div class="lang-select">
+        <select id="toLang">
+          <option value="es">Spanish</option>
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="it">Italian</option>
+          <option value="pt">Portuguese</option>
+          <option value="ru">Russian</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="zh-CN">Chinese (Simplified)</option>
+          <option value="zh-TW">Chinese (Traditional)</option>
+          <option value="ar">Arabic</option>
+          <option value="hi">Hindi</option>
+        </select>
+      </div>
     </div>
 
-    <script>
-        // ---------- DOM references ----------
-        const fromLang = document.getElementById('fromLang');
-        const toLang   = document.getElementById('toLang');
-        const swapBtn  = document.getElementById('swapBtn');
-        const inputText = document.getElementById('inputText');
-        const outputText = document.getElementById('outputText');
-        const micBtn   = document.getElementById('micBtn');
-        const micBtnText = document.getElementById('micBtnText');
-        const clearBtn = document.getElementById('clearBtn');
-        const speakBtn = document.getElementById('speakBtn');
-        const copyBtn  = document.getElementById('copyBtn');
-        const status   = document.getElementById('status');
+    <!-- input text -->
+    <section>
+      <div class="label">Source text</div>
+      <textarea id="inputText"
+        placeholder="Type or paste what you want to translate..."></textarea>
 
-        // ---------- Speech recognition ----------
-        let recognition;
-        let isRecording = false;
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.interimResults = true;
-            recognition.maxAlternatives = 1;
+      <div class="btn-row">
+        <button class="btn btn-primary" id="translateBtn">
+          ⚡ Translate
+        </button>
+        <button class="btn" id="clearBtn">
+          ✖ Clear
+        </button>
+      </div>
+    </section>
 
-            recognition.onstart = () => {
-                isRecording = true;
-                micBtn.classList.add('recording');
-                micBtnText.textContent = 'Listening…';
-                showStatus('Listening… Speak now', 'info');
-            };
+    <div class="divider"></div>
 
-            recognition.onresult = e => {
-                let interim = '', final = '';
-                for (let i = e.resultIndex; i < e.results.length; ++i) {
-                    const transcript = e.results[i][0].transcript;
-                    e.results[i].isFinal ? final += transcript + ' ' : interim += transcript;
-                }
-                if (final) {
-                    inputText.value = final.trim();
-                    translateText();
-                } else {
-                    inputText.value = interim;
-                }
-            };
+    <!-- output text -->
+    <section>
+      <div class="label">Translation</div>
+      <textarea id="outputText"
+        placeholder="Translation will appear here..." readonly></textarea>
 
-            recognition.onerror = e => {
-                console.error('SR error', e);
-                isRecording = false;
-                micBtn.classList.remove('recording');
-                micBtnText.textContent = 'Speak';
-                const msg = e.error === 'not-allowed' ? 'Microphone permission denied.'
-                          : e.error === 'no-speech' ? 'No speech detected.'
-                          : `Error: ${e.error}`;
-                showStatus(msg, 'error');
-            };
+      <div class="btn-row">
+        <button class="btn btn-primary" id="speakBtn" disabled>
+          🔊 Speak Output
+        </button>
+        <button class="btn" id="copyBtn" disabled>
+          📋 Copy
+        </button>
+      </div>
+    </section>
 
-            recognition.onend = () => {
-                isRecording = false;
-                micBtn.classList.remove('recording');
-                micBtnText.textContent = 'Speak';
-            };
-        }
+    <div class="status" id="status"></div>
+  </main>
+</div>
 
-        // ---------- Language map for TTS ----------
-        const speechLangMap = {
-            es: 'es-ES', en: 'en-US', fr: 'fr-FR', de: 'de-DE',
-            it: 'it-IT', pt: 'pt-PT', ru: 'ru-RU', ja: 'ja-JP',
-            ko: 'ko-KR', 'zh-CN': 'zh-CN', 'zh-TW': 'zh-TW',
-            ar: 'ar-SA', hi: 'hi-IN', nl: 'nl-NL', pl: 'pl-PL',
-            tr: 'tr-TR', sv: 'sv-SE', th: 'th-TH', vi: 'vi-VN',
-            id: 'id-ID'
-        };
+<script>
+// === DOM ====================================================================
+const fromLang   = document.getElementById("fromLang");
+const toLang     = document.getElementById("toLang");
+const swapBtn    = document.getElementById("swapBtn");
+const inputText  = document.getElementById("inputText");
+const outputText = document.getElementById("outputText");
+const translateBtn = document.getElementById("translateBtn");
+const clearBtn   = document.getElementById("clearBtn");
+const speakBtn   = document.getElementById("speakBtn");
+const copyBtn    = document.getElementById("copyBtn");
+const statusBox  = document.getElementById("status");
 
-        // ---------- UI event listeners ----------
-        micBtn.addEventListener('click', () => {
-            if (!recognition) {
-                showStatus('Speech recognition not supported.', 'error');
-                return;
-            }
-            if (isRecording) recognition.stop();
-            else {
-                recognition.lang = fromLang.value;
-                recognition.start();
-            }
-        });
+// map for speech synthesis language codes
+const speechLangMap = {
+  "en": "en-US", "es": "es-ES", "fr": "fr-FR", "de": "de-DE", "it": "it-IT",
+  "pt": "pt-PT", "ru": "ru-RU", "ja": "ja-JP", "ko": "ko-KR",
+  "zh-CN": "zh-CN", "zh-TW": "zh-TW", "ar": "ar-SA", "hi": "hi-IN"
+};
 
-        clearBtn.addEventListener('click', () => {
-            inputText.value = '';
-            outputText.value = '';
-            speakBtn.disabled = true;
-            copyBtn.disabled = true;
-            hideStatus();
-        });
+// === EVENTS ================================================================
 
-        swapBtn.addEventListener('click', () => {
-            const fromVal = fromLang.value;
-            const toVal   = toLang.value;
+// Swap languages and texts
+swapBtn.addEventListener("click", () => {
+  const fromValue = fromLang.value;
+  const toValue   = toLang.value;
+  fromLang.value = toValue;
+  toLang.value   = fromValue;
 
-            // Find a matching speech‑recognition code for the target language
-            let newFrom = 'en-US';
-            for (let opt of fromLang.options) {
-                if (opt.value.startsWith(toVal)) { newFrom = opt.value; break; }
-            }
-            fromLang.value = newFrom;
-            toLang.value   = fromVal.split('-')[0];
+  const t = inputText.value;
+  inputText.value  = outputText.value;
+  outputText.value = t;
 
-            // Swap the text boxes
-            const tmp = inputText.value;
-            inputText.value = outputText.value;
-            outputText.value = tmp;
-            if (inputText.value) translateText();
-        });
+  if (inputText.value.trim()) translateText();
+});
 
-        inputText.addEventListener('input', () => {
-            if (inputText.value.trim()) translateText();
-            else {
-                outputText.value = '';
-                speakBtn.disabled = true;
-                copyBtn.disabled = true;
-            }
-        });
+// Translate button
+translateBtn.addEventListener("click", translateText);
 
-        speakBtn.addEventListener('click', () => {
-            if (outputText.value) speakText(outputText.value, toLang.value);
-        });
+// Enter+Cmd/Ctrl shortcut
+inputText.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+    translateText();
+  }
+});
 
-        copyBtn.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(outputText.value);
-                showStatus('Copied to clipboard!', 'success');
-            } catch {
-                // fallback for older browsers
-                outputText.select();
-                document.execCommand('copy');
-                showStatus('Copied to clipboard!', 'success');
-            }
-        });
+// Clear
+clearBtn.addEventListener("click", () => {
+  inputText.value = "";
+  outputText.value = "";
+  speakBtn.disabled = true;
+  copyBtn.disabled = true;
+  hideStatus();
+});
 
-        // ---------- Translation (MyMemory free API) ----------
-        let translateTimer;
-        async function translateText() {
-            clearTimeout(translateTimer);
-            const txt = inputText.value.trim();
-            if (!txt) {
-                outputText.value = '';
-                speakBtn.disabled = true;
-                copyBtn.disabled = true;
-                return;
-            }
+// Speak translation
+speakBtn.addEventListener("click", () => {
+  const txt = outputText.value.trim();
+  if (!txt) return;
+  speakText(txt, toLang.value);
+});
 
-            translateTimer = setTimeout(async () => {
-                try {
-                    showStatus('Translating…', 'info');
-                    const src = fromLang.value.split('-')[0];
-                    const tgt = toLang.value;
-                    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(txt)}&langpair=${src}|${tgt}`;
-                    const resp = await fetch(url);
-                    const data = await resp.json();
+// Copy translation
+copyBtn.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(outputText.value);
+    showStatus("Copied to clipboard.", "success");
+  } catch (e) {
+    outputText.select();
+    document.execCommand("copy");
+    showStatus("Copied to clipboard (fallback).", "success");
+  }
+});
 
-                    if (data.responseStatus === 200 && data.responseData.translatedText) {
-                        outputText.value = data.responseData.translatedText;
-                        speakBtn.disabled = false;
-                        copyBtn.disabled = false;
-                        showStatus('Translation ready!', 'success');
-                    } else {
-                        throw new Error('Bad response');
-                    }
-                } catch (e) {
-                    console.error(e);
-                    showStatus('Translation failed – try again.', 'error');
-                    outputText.value = '';
-                    speakBtn.disabled = true;
-                    copyBtn.disabled = true;
-                }
-            }, 500); // debounce
-        }
+// === TRANSLATION FUNCTION ===================================================
+let translationTimeout;
 
-        // ---------- Text‑to‑Speech ----------
-        function speakText(txt, lang) {
-            if (!('speechSynthesis' in window)) {
-                showStatus('Text‑to‑speech not supported.', 'error');
-                return;
-            }
-            window.speechSynthesis.cancel();
-            const utter = new SpeechSynthesisUtterance(txt);
-            utter.lang = speechLangMap[lang] || lang;
-            utter.rate = 0.9;
-            const voices = speechSynthesis.getVoices();
-            const voice = voices.find(v => v.lang.startsWith(utter.lang.split('-')[0]));
-            if (voice) utter.voice = voice;
+async function translateText() {
+  const text = inputText.value.trim();
+  if (!text) {
+    showStatus("Nothing to translate.", "error");
+    return;
+  }
 
-            utter.onstart = () => showStatus('Speaking…', 'info');
-            utter.onend   = () => hideStatus();
-            utter.onerror = () => showStatus('Speech error.', 'error');
+  clearTimeout(translationTimeout);
+  translationTimeout = setTimeout(async () => {
+    try {
+      const sourceLang = fromLang.value;
+      const targetLang = toLang.value;
+      showStatus("Translating...", "info");
 
-            speechSynthesis.speak(utter);
-        }
+      const url = `https://api.mymemory.translated.net/get?q=${
+        encodeURIComponent(text)
+      }&langpair=${sourceLang}|${targetLang}`;
 
-        // Load voices for browsers that populate them lazily
-        if ('speechSynthesis' in window) {
-            speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
-        }
+      const res  = await fetch(url);
+      const data = await res.json();
 
-        // ---------- Status helpers ----------
-        let statusTimer;
-        function showStatus(msg, type) {
-            clearTimeout(statusTimer);
-            status.textContent = msg;
-            status.className = `status show ${type}`;
-            if (type !== 'info') statusTimer = setTimeout(hideStatus, 3000);
-        }
-        function hideStatus() {
-            status.classList.remove('show');
-        }
+      if (data.responseStatus === 200 && data.responseData.translatedText) {
+        outputText.value = data.responseData.translatedText;
+        speakBtn.disabled = false;
+        copyBtn.disabled = false;
+        showStatus("Translation complete.", "success");
+      } else {
+        throw new Error("Bad response");
+      }
+    } catch (err) {
+      console.error(err);
+      showStatus("Translation failed. Check connection and try again.", "error");
+      outputText.value = "";
+      speakBtn.disabled = true;
+      copyBtn.disabled = true;
+    }
+  }, 300);
+}
 
-        // ---------- Feature‑detect on load ----------
-        window.addEventListener('load', () => {
-            if (!recognition) {
-                showStatus('⚠️ Speech recognition unavailable – you can still type & translate.', 'error');
-                micBtn.disabled = true;
-            }
-            if (!('speechSynthesis' in window)) {
-                showStatus('⚠️ Text‑to‑speech unavailable in this browser.', 'error');
-            }
-        });
-    </script>
+// === TEXT-TO-SPEECH ========================================================
+function speakText(text, langCode) {
+  if (!("speechSynthesis" in window)) {
+    showStatus("Text-to-speech not supported in this browser.", "error");
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang  = speechLangMap[langCode] || langCode;
+  utterance.rate  = 0.95;
+  utterance.pitch = 1.0;
+
+  // try to pick a matching voice
+  const voices = window.speechSynthesis.getVoices();
+  const match = voices.find(v =>
+    v.lang.toLowerCase().startsWith((utterance.lang || "").split("-")[0].toLowerCase())
+  );
+  if (match) utterance.voice = match;
+
+  utterance.onstart = () => showStatus("Speaking...", "info");
+  utterance.onend   = () => hideStatus();
+  utterance.onerror = () => showStatus("Speech failed.", "error");
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// preload voices for some browsers
+if ("speechSynthesis" in window) {
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+
+// === STATUS HELPERS ========================================================
+function showStatus(message, type) {
+  statusBox.textContent = message;
+  statusBox.className = "status show " + type;
+}
+
+function hideStatus() {
+  statusBox.className = "status";
+}
+</script>
+
 </body>
 </html>
